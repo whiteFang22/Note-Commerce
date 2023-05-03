@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
+import { StateContext } from '../States';
 
-function Login(props) {
+function Log(props) {
+  const [state, setState] = useContext(StateContext);
+  // console.log(state);
+
   return (
     <div className="modal w-screen h-screen fixed bottom-0 left-0 right-0 top-0">
-      <div onClick={props.toggleModal} className='overlay w-screen h-screen fixed bottom-0 left-0 right-0 top-0'></div>
+      <div onClick={props.toggleModal} className='overlay w-screen h-screen fixed bottom-0 left-0 right-0 top-0 bg-transparent/30'></div>
       <div className="modal-content grid gap-y-3 relative bg-white text-black mx-auto mt-[10vh] py-4 px-7 w-[400px] border-2 rounded-3xl">
         <span className="font-bold text-lg mb-5">Benvenuto su Studocu</span>
-        <from className="contents">
+        <div className="contents form">
           {props.registration && (
             <>
               <label className=''>Nome</label>
@@ -24,8 +28,8 @@ function Login(props) {
 
           <Link className="text-sm text-[#3092fa] hover:text-[#2c67e7] justify-self-end">Ho dimenticato la password</Link>
 
-          <button className='broder rounded-full p-2 text-white bg-[#3092fa] hover:bg-[#2c86e7]'>Accedi</button>
-        </from>
+          <button onClick={()=> setState( !(state) )} className='broder rounded-full p-2 text-white bg-[#3092fa] hover:bg-[#2c86e7]'>Accedi</button>
+        </div>
 
         {props.registration ?
             <div className='flex flex-row justify-center my-3'>
@@ -49,4 +53,4 @@ function Login(props) {
   )
 }
 
-export default Login
+export default Log

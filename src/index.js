@@ -5,45 +5,48 @@ import Home from './pages/Home';
 import {
    createBrowserRouter,
    RouterProvider,
- } from "react-router-dom";
+} from "react-router-dom";
 import Search from './pages/Search';
 import Upgrade from './pages/Upgrade';
 import Abbonamento from './pages/Abbonamento';
 import Document from './pages/Document';
 import App from './pages/App';
+import States from './components/States';
 // import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
-{
-   path: "/",
-   element: <Home/>,
-},
-{
-   path: "search",
-   element: <Search/>,
-},
-{
-   path: "document",
-   element: <Document/>,
-},
-{
-   path: "upgrade",
-   element: <Upgrade/>,
-},
-{
-   path: "abbonamento",
-   element: <Abbonamento/>,
-},
-{
-   path: "prove",
-   element: <App/>,
-},
+   {
+      path: "/",
+      element: <Home />,
+   },
+   {
+      path: "search",
+      element: <Search />,
+   },
+   {
+      path: "document",
+      element: <Document />,
+   },
+   {
+      path: "upgrade",
+      element: <Upgrade />,
+   },
+   {
+      path: "abbonamento",
+      element: <Abbonamento />,
+   },
+   {
+      path: "prove",
+      element: <App />,
+   },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
    <React.StrictMode>
-      <RouterProvider router={router} />
+      <States>
+         <RouterProvider router={router} />
+      </States>
    </React.StrictMode>
 );
 

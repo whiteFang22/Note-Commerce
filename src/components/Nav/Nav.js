@@ -1,23 +1,37 @@
-import React from "react";
+import React, { createContext, useContext } from "react";
 import More from "./More";
 import Studocu from "./Studocu";
 import InputResearch from "./InputResearch";
 import Accedi from "./Accedi";
 import Registrati from "./Registrati";
+import UserIcon from "./Dropdown/UserIcon";
+import { StateContext } from "../States";
+
+export const UserContext = createContext();
 
 function Nav(props) {
    let navclass = `nav flex justify-between items-baseline p-1 bg-${props.nav_color}`;
-   
+   // styling navbar
    let rigth_nav
    let left_nav;
    if (props.input) {
       left_nav = "flex items-baseline w-full lg:w-2/3"
-      rigth_nav = `mr-12 hidden lg:inline`; 
+      rigth_nav = `mr-12 hidden lg:inline`;
    }
    else {
       left_nav = "flex items-baseline"
-      rigth_nav = `mr-12 hidden sm:inline`; 
+      rigth_nav = `mr-12 hidden sm:inline`;
    }
+   
+   const [state] = useContext(StateContext);
+   console.log(state);
+   // // dinamic
+   // const [logged, setLogged] = useState(state.logged);
+
+   // // usa useEffect per svolgere questa funzione solo quando viene modificato logged
+   // const toggleUser = () => {
+   //    setLogged(!logged);
+   // }
 
    return (
       // <div className="nav flex justify-between items-baseline">
@@ -31,10 +45,18 @@ function Nav(props) {
             {props.input ? <InputResearch /> : ""}
 
          </div>
-         <div className={rigth_nav}>
-            <Accedi />
-            <Registrati />
-         </div>
+         {/* <UserContext.Provider value={{toggleUser}}> */}
+            <div className={rigth_nav}>
+               {!(state) ?
+                  <>
+                     <Accedi />
+                     <Registrati />
+                  </>
+                  :
+                  <UserIcon />
+               }
+            </div>
+         {/* </UserContext.Provider> */}
       </div>
    );
 }

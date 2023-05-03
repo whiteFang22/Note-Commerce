@@ -1,29 +1,29 @@
 import React, {useState} from 'react'
-import Login from "./Login"
+import Log from "./Log"
 
 function Registrati() {
    const [login, setLogin] = useState(false);
    const [registration, setRegistration] = useState(false);
 
    const toggleLogin = () => {
-      {registration && toggleRegistration()}
+      if (registration) toggleRegistration();
       setLogin(!login);
    }
 
    const toggleRegistration = () => {
-      {login && toggleLogin()}
+      if (login) toggleLogin();
       setRegistration(!registration);
    }
 
    const toggleModal = () => {
-      {registration && toggleRegistration()}
-      {login && toggleLogin()}
+      if (registration) toggleRegistration();
+      if (login) toggleLogin();
    }
 
    return (
       <>
          <button onClick={toggleRegistration} className="rounded-full bg-[#e0ff6e] hover:bg-[#cbef49] px-4 py-2 text-black h-fit">Registrati</button>
-         {(login||registration) && ( <Login toggleLogin={toggleLogin} toggleRegistration={toggleRegistration} toggleModal={toggleModal} registration={registration}/> )}
+         {(login||registration) && ( <Log toggleLogin={toggleLogin} toggleRegistration={toggleRegistration} toggleModal={toggleModal} registration={registration}/> )}
       </>
    )
 }
