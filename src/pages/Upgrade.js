@@ -6,12 +6,10 @@ import PianoTariffario from '../components/Upgrade/PianoTariffario'
 function Upgrade() {
    return (
       <>
-      <section className="sticky top-0">
-         <Nav input="1" more_color="black" nav_color="[#e0ff6e]"/>
-      </section>
-      <Info/>
-      <Confronto/>
-      <PianoTariffario/>
+         <Nav input="1" more_color="black" nav_color="[#e0ff6e]" />
+         <Info />
+         <Confronto />
+         <PianoTariffario />
       </>
    )
 }

@@ -4,13 +4,13 @@ import Studocu from "./Studocu";
 import InputResearch from "./InputResearch";
 import Accedi from "./Accedi";
 import Registrati from "./Registrati";
-import UserIcon from "./Dropdown/UserIcon";
+import Dropdown from "./Dropdown/Dropdown";
 import { StateContext } from "../States";
 
 export const UserContext = createContext();
 
 function Nav(props) {
-   let navclass = `nav flex justify-between items-baseline p-1 bg-${props.nav_color}`;
+   let navclass = `nav flex justify-between items-baseline p-1 bg-${props.nav_color} sticky top-0`;
    // styling navbar
    let rigth_nav
    let left_nav;
@@ -22,16 +22,9 @@ function Nav(props) {
       left_nav = "flex items-baseline"
       rigth_nav = `mr-12 hidden sm:inline`;
    }
-   
-   const [state] = useContext(StateContext);
-   console.log(state);
-   // // dinamic
-   // const [logged, setLogged] = useState(state.logged);
 
-   // // usa useEffect per svolgere questa funzione solo quando viene modificato logged
-   // const toggleUser = () => {
-   //    setLogged(!logged);
-   // }
+   // gets the global state
+   const [state] = useContext(StateContext);
 
    return (
       // <div className="nav flex justify-between items-baseline">
@@ -42,21 +35,21 @@ function Nav(props) {
                <Studocu />
             </div>
             {/* con questo conditional posso controllare quando visualizzare nella Nav l'input */}
-            {props.input ? <InputResearch /> : ""}
+            {props.input ? <InputResearch placeholder="Cerca insegnamenti, libri o appunti"/> : ""}
 
          </div>
-         {/* <UserContext.Provider value={{toggleUser}}> */}
-            <div className={rigth_nav}>
-               {!(state) ?
-                  <>
-                     <Accedi />
-                     <Registrati />
-                  </>
-                  :
-                  <UserIcon />
-               }
-            </div>
-         {/* </UserContext.Provider> */}
+
+         <div className={rigth_nav}>
+            {!(state) ?
+               <>
+                  <Accedi />
+                  <Registrati />
+               </>
+               :
+               <Dropdown />
+            }
+         </div>
+
       </div>
    );
 }

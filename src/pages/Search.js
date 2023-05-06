@@ -1,7 +1,7 @@
 import React from 'react'
 import Nav from '../components/Nav/Nav'
 import Filters from '../components/Search/Filters'
-import FContent from '../components/Search/FContent'
+import AnteprimaPdf from '../components/Search/AnteprimaPdf'
 import { useLocation } from 'react-router-dom'
 
 function Search() {
@@ -9,11 +9,15 @@ function Search() {
   console.log(location)
   return (
     <>
-      <section className="sticky top-0">
-        <Nav input="1" more_color="black" nav_color="slate-200"/>
-      </section>
+      <Nav input="1" more_color="black" nav_color="slate-200" />
       <Filters></Filters>
-      <FContent></FContent>
+      <section className='mt-10 mx-8'>
+        <AnteprimaPdf></AnteprimaPdf>
+        <AnteprimaPdf></AnteprimaPdf>
+        <AnteprimaPdf></AnteprimaPdf>
+        <AnteprimaPdf></AnteprimaPdf>
+        <AnteprimaPdf></AnteprimaPdf>
+      </section>
     </>
   )
 }

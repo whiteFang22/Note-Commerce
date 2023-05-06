@@ -1,6 +1,6 @@
 import React from 'react'
 import Nav from '../components/Nav/Nav'
-import Content from '../components/Content'
+import Content from '../components/Home/Content'
 
 function Home() {
   return (

@@ -12,6 +12,7 @@ import Abbonamento from './pages/Abbonamento';
 import Document from './pages/Document';
 import App from './pages/App';
 import States from './components/States';
+import Profilo from './pages/Profilo';
 // import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
    {
       path: "prove",
       element: <App />,
+   },
+   {
+      path: "profilo",
+      element: <Profilo />,
    },
 ]);
 
