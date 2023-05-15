@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import Accedi from './Accedi';
-import Registrati from './Registrati';
-import Login from './Login';
+// import Accedi from './Accedi';
+// import Registrati from './Registrati';
+import Log from './Log';
 
 function Modal(props) {
    const [login, setLogin] = useState(false);
@@ -24,9 +24,9 @@ function Modal(props) {
 
    return (
       <div>
-         {props.type="1" && <Accedi />}
-         {props.type="2" && <Registrati />}
-         {(login||registration) && ( <Login toggleLogin={toggleLogin} toggleRegistration={toggleRegistration} toggleModal={toggleModal} registration={registration}/> )}
+         {/* {props.accedi=true && <Accedi />}
+         {props.registrati=true && <Registrati />} */}
+         {(login||registration) && ( <Log toggleLogin={toggleLogin} toggleRegistration={toggleRegistration} toggleModal={toggleModal} registration={registration}/> )}
       </div>
    )
 }

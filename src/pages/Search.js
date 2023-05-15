@@ -2,11 +2,11 @@ import React from 'react'
 import Nav from '../components/Nav/Nav'
 import Filters from '../components/Search/Filters'
 import AnteprimaPdf from '../components/Search/AnteprimaPdf'
-import { useLocation } from 'react-router-dom'
+// import { useLocation } from 'react-router-dom'
 
 function Search() {
-  const location = useLocation();
-  console.log(location)
+  // const location = useLocation();
+  // console.log(location)
   return (
     <>
       <Nav input="1" more_color="black" nav_color="slate-200" />

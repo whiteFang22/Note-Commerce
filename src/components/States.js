@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 // const initialState = {
 //    logged: true,
 // }
-const initialState = false;
+const initialState = {
+   user: "",
+   logged: false
+};
 
 export const StateContext = React.createContext();
 
