@@ -35,6 +35,7 @@ function Nav(props) {
 
    return (
       // <div className="nav flex justify-between items-baseline">
+      <section className="sticky top-0 z-20">
       <div className={navclass}>
 
          <div className={left_nav}>
@@ -61,8 +62,9 @@ function Nav(props) {
                <Dropdown />
             }
          </div>
-
       </div>
+      {props.children}
+      </section>
    );
 }
 

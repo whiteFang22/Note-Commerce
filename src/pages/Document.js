@@ -1,36 +1,49 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Nav from '../components/Nav/Nav'
-import axios from 'axios'
 import PdfReader from '../components/PdfReader';
 
 function Document() {
-   const [pdfData, setPdfData] = useState(null);
-
-   // useEffect(() => {
-   //    fetch('http://localhost:3500/download') // Aggiungi l'URL corretto del tuo endpoint per ottenere il file PDF
-   //       .then(response => response.blob())
-   //       .then(data => {
-   //          const fileReader = new FileReader();
-   //          fileReader.onloadend = () => {
-   //             setPdfData(fileReader.result);
-   //          };
-   //          fileReader.readAsDataURL(data);
-   //       });
-   // }, []);
 
    return (
-      <div>
-         <Nav input="1" nav_color="slate-200" />
-         {/* <div className="bg-slate-200">
-            <embed className="mx-auto w-[500px] h-[800px] border-white border-[0px] overflow-hidden" src="pdf/BASH-HTTP.pdf#toolbar=0" />
-         </div> */}
-         {/* {pdfData ? (
-            <embed src={pdfData} type="application/pdf" width="100%" height="600px" />
-         ) : (
-            <p>Caricamento del PDF...</p>
-         )} */}
+      <div className='scroll-smooth'>
+         <Nav input="1" nav_color="slate-200">
+            {/* <Anchor direction="horizontal" offsetTop={85} 
+               items={[
+                  {
+                     key: 'part-1',
+                     href: '#part-1',
+                     title: 'Part 1',
+                  },
+                  {
+                     key: 'part-2',
+                     href: '#part-2',
+                     title: 'Part 2',
+                  },
+                  {
+                     key: 'part-3',
+                     href: '#part-3',
+                     title: 'Part 3',
+                  },
+                  {
+                     key: 'part-4',
+                     href: '#part-4',
+                     title: 'Part 4',
+                  },
+                  {
+                     key: 'part-5',
+                     href: '#part-5',
+                     title: 'Part 5',
+                  },
+                  {
+                     key: 'part-6',
+                     href: '#part-6',
+                     title: 'Part 6',
+                  },
+               ]}
+               className='sticky top-0 z-30 text-black bg-transparent' /> */}
+         </Nav> 
          <PdfReader />
-         
+
       </div>
    )
 }

@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 
 function ControlPanel(props) {
-   const {setPageNumber, pageNumber, numPages, scale, setScale} = props;
+   const { setPageNumber, pageNumber, numPages, scale, setScale } = props;
+   const [page, setPage] = useState("#page-2")
+   const [count, setCount] = useState(2)
 
    // Controlli per cambiare pagina
    const nextPage = () => {
-      if (pageNumber!=numPages) setPageNumber(pageNumber+1)
+      if (pageNumber != numPages) setPageNumber(pageNumber + 1)
+      setCount(count + 1)
+      setPage(`#page-${count}`);
    }
 
    const previousPage = () => {
-      if (pageNumber!=1) setPageNumber(pageNumber-1)
+      if (pageNumber != 1) setPageNumber(pageNumber - 1)
+      setCount(count - 1)
+      setPage(`#page-${count}`);
    }
 
    // Controlli per zommare la pagina
@@ -24,23 +31,26 @@ function ControlPanel(props) {
       if (!isMinZoom) setScale(scale - 0.1)
    }
 
+
+
+
    return (
       <div className="flex justify-center gap-3 p-3 bg-slate-200 my-3 rounded-xl px-10 fixed bottom-[5px] z-30">
-         <button onClick={previousPage}>
+         <a href={page} onClick={previousPage}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                <path d="M7.712 4.819A1.5 1.5 0 0110 6.095v2.973c.104-.131.234-.248.389-.344l6.323-3.905A1.5 1.5 0 0119 6.095v7.81a1.5 1.5 0 01-2.288 1.277l-6.323-3.905a1.505 1.505 0 01-.389-.344v2.973a1.5 1.5 0 01-2.288 1.276l-6.323-3.905a1.5 1.5 0 010-2.553L7.712 4.82z" />
             </svg>
-         </button>
+         </a>
 
          <div>
             Page {pageNumber} of {numPages}
          </div>
 
-         <button onClick={nextPage}>
+         <a href={page} onClick={nextPage}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                <path d="M3.288 4.819A1.5 1.5 0 001 6.095v7.81a1.5 1.5 0 002.288 1.277l6.323-3.905c.155-.096.285-.213.389-.344v2.973a1.5 1.5 0 002.288 1.276l6.323-3.905a1.5 1.5 0 000-2.553L12.288 4.82A1.5 1.5 0 0010 6.095v2.973a1.506 1.506 0 00-.389-.344L3.288 4.82z" />
             </svg>
-         </button>
+         </a>
 
 
          <button onClick={zoomOut}>
@@ -50,7 +60,7 @@ function ControlPanel(props) {
             </svg>
          </button>
 
-         <span>{(scale*100).toFixed()}%</span>
+         <span>{(scale * 100).toFixed()}%</span>
 
          <button onClick={zoomIn}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
@@ -58,7 +68,6 @@ function ControlPanel(props) {
                <path fill-rule="evenodd" d="M2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9zm7-5.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11z" clip-rule="evenodd" />
             </svg>
          </button>
-         
       </div>
    )
 }
