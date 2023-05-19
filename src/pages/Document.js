@@ -1,8 +1,11 @@
 import React from 'react'
 import Nav from '../components/Nav/Nav'
 import PdfReader from '../components/PdfReader';
+import { useLocation } from 'react-router-dom'
 
 function Document() {
+   const location = useLocation();
+   const id = location.state?.id;
 
    return (
       <div className='scroll-smooth'>
@@ -42,7 +45,7 @@ function Document() {
                ]}
                className='sticky top-0 z-30 text-black bg-transparent' /> */}
          </Nav> 
-         <PdfReader />
+         <PdfReader id={id}/>
 
       </div>
    )

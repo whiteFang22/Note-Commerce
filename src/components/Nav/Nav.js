@@ -44,7 +44,7 @@ function Nav(props) {
                <Studocu />
             </div>
             {/* con questo conditional posso controllare quando visualizzare nella Nav l'input */}
-            {props.input ? <InputResearch placeholder="Cerca insegnamenti, libri o appunti"/> : ""}
+            {props.input ? <InputResearch update={props.update} setUpdate={props.setUpdate} name={props.searchInput} placeholder="Cerca insegnamenti, libri o appunti"/> : ""}
 
          </div>
 

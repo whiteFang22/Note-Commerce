@@ -20,7 +20,7 @@ function Content(props) {
                <span className='flex-1'></span>
             </div>
             <div>
-               <AnteprimaPdf profilo="true">
+               {/* <AnteprimaPdf profilo="true">
                   <SaveButton />
                </AnteprimaPdf>
                <AnteprimaPdf profilo="true">
@@ -31,7 +31,7 @@ function Content(props) {
                </AnteprimaPdf>
                <AnteprimaPdf profilo="true">
                   <SaveButton />
-               </AnteprimaPdf>
+               </AnteprimaPdf> */}
                
                
             </div>
