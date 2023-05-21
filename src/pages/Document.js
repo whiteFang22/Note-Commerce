@@ -5,11 +5,11 @@ import { useLocation } from 'react-router-dom'
 
 function Document() {
    const location = useLocation();
-   const id = location.state?.id;
+   const _id = location.state?._id._id;
 
    return (
       <div className='scroll-smooth'>
-         <Nav input="1" nav_color="slate-200">
+         <Nav input="1" nav_color="slate-200" >
             {/* <Anchor direction="horizontal" offsetTop={85} 
                items={[
                   {
@@ -45,7 +45,7 @@ function Document() {
                ]}
                className='sticky top-0 z-30 text-black bg-transparent' /> */}
          </Nav> 
-         <PdfReader id={id}/>
+         <PdfReader _id={_id}/>
 
       </div>
    )

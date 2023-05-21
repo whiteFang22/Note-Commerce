@@ -8,10 +8,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 function PreviewPdfReader(props) {
    const [numPages, setNumPages] = useState(null);
-   const [pageNumber, setPageNumber] = useState(1);
-   const [scale, setScale] = useState(0.1);
+   // const [pageNumber, setPageNumber] = useState(1);
+   const [scale] = useState(0.14);
 
-   function onDocumentLoadSuccess({ numPages }) {
+   function onDocumentLoadSuccess() {
       setNumPages(numPages);
    }
    const [pdfData, setPdfData] = useState(null);
@@ -20,6 +20,7 @@ function PreviewPdfReader(props) {
       fetch(`http://localhost:3500/downloadOne?_id=${id}`) // Aggiungi l'URL corretto del tuo endpoint per ottenere il file PDF
          .then(response => response.blob())
          .then(data => {
+            console.log(data.content)
             const fileReader = new FileReader();
             fileReader.onloadend = () => {
                setPdfData(fileReader.result);

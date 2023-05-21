@@ -9,7 +9,6 @@ function Log(props) {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // console.log(state);
 
   async function registration() {
     try {
@@ -56,11 +55,13 @@ function Log(props) {
       })
       .then(response => {
         // Gestisci la risposta di successo
-        const {message, user} = response.data
-        console.log(message)
+        const {message, user, userId, premium} = response.data
+        console.log(message, premium)
         setState({
           user: user,
+          userId: userId,
           logged: true,
+          premium: premium
         });
       })
       .catch(error => {

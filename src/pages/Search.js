@@ -43,7 +43,6 @@ function Search(props) {
       })
       .then(response => {
         setPdfs(response.data)
-        // console.log(pdfs)
         // allow to load AnteprimaPdf only when finished to download data from server
         setIsLoading(false)
       })

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PreviewPdfReader from './PreviewPdfReader';
-import { Document, Page, pdfjs } from 'react-pdf'
+import { pdfjs } from 'react-pdf'
 
 
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -21,7 +21,7 @@ function AnteprimaPdf(props) {
                   </div>
                   <div className="ml-4 flex flex-col ">
                      <div className='line-clamp-2'>
-                        <Link to="/document" state={{id:{_id}}} className="hover:underline text-blue-400">{name} - {course}</Link>
+                        <Link to="/document" state={{_id:{_id}}} className="hover:underline text-blue-400">{name} - {course}</Link>
                      </div>
                      <div className="flex">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-6">

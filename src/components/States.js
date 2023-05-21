@@ -5,7 +5,9 @@ import React, { useState } from 'react'
 // }
 const initialState = {
    user: "",
-   logged: false
+   userId: "",
+   logged: false,
+   premium: false
 };
 
 export const StateContext = React.createContext();

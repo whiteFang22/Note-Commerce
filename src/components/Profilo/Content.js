@@ -1,10 +1,40 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import AnteprimaPdf from '../Search/AnteprimaPdf'
 import InputResearch from '../Nav/InputResearch'
 import OrderBy from './OrderBy'
 import SaveButton from './SaveButton'
+import { StateContext } from '../States'
+import axios from 'axios'
+
+//  userId --> (/userPdfs) savedPdfsIds --> foreach (/downloadOne) pdfContent
 
 function Content(props) {
+   const [state] = useContext(StateContext);
+
+   const [isLoading, setIsLoading] = useState(true)
+
+   const [pdfs, setPdfs] = useState([])
+   // const [update, setUpdate] = useState(0)
+
+   const fetchContents = async (userId) => {
+      try {
+         const response = await axios.post(`http://localhost:3500/userPdfs`, {
+            _id: userId
+         });
+         setPdfs(response.data)
+         setIsLoading(false)
+
+      } catch (error) {
+         // Gestisci gli errori qui
+         console.error(error);
+      }
+   };
+
+   useEffect(() => {
+      const { userId } = state
+      fetchContents(userId)
+   }, [])
+
    return (
       <div className='px-10 mt-8'>
          <InputResearch placeholder="Cerca tra i salvati" Style="max-w-[250px] border" />
@@ -20,20 +50,13 @@ function Content(props) {
                <span className='flex-1'></span>
             </div>
             <div>
-               {/* <AnteprimaPdf profilo="true">
-                  <SaveButton />
-               </AnteprimaPdf>
-               <AnteprimaPdf profilo="true">
-                  <SaveButton />
-               </AnteprimaPdf>
-               <AnteprimaPdf profilo="true">
-                  <SaveButton />
-               </AnteprimaPdf>
-               <AnteprimaPdf profilo="true">
-                  <SaveButton />
-               </AnteprimaPdf> */}
-               
-               
+               {(isLoading === false && pdfs.length!==0) &&
+                  pdfs.map((pdf, index) => (
+                     <AnteprimaPdf key={index} pdf={pdf}><SaveButton/></AnteprimaPdf>
+                  ))
+               }
+
+
             </div>
          </div>
       </div>
