@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import AnteprimaPdf from '../Search/AnteprimaPdf'
 import InputResearch from '../Nav/InputResearch'
 import OrderBy from './OrderBy'
-import SaveButton from './SaveButton'
+import DeleteButton from './RemoveButton'
 import { StateContext } from '../States'
 import axios from 'axios'
 
@@ -12,7 +12,7 @@ function Content(props) {
    const [state] = useContext(StateContext);
 
    const [isLoading, setIsLoading] = useState(true)
-
+   const [reload, setReloading] = useState(false) //reload the page when a pdf is removed
    const [pdfs, setPdfs] = useState([])
    // const [update, setUpdate] = useState(0)
 
@@ -33,7 +33,7 @@ function Content(props) {
    useEffect(() => {
       const { userId } = state
       fetchContents(userId)
-   }, [])
+   }, [reload])
 
    return (
       <div className='px-10 mt-8'>
@@ -52,7 +52,7 @@ function Content(props) {
             <div>
                {(isLoading === false && pdfs.length!==0) &&
                   pdfs.map((pdf, index) => (
-                     <AnteprimaPdf key={index} pdf={pdf}><SaveButton/></AnteprimaPdf>
+                     <AnteprimaPdf key={index} pdf={pdf}><DeleteButton setReloading={setReloading} pdfId={pdf._id}/></AnteprimaPdf>
                   ))
                }
 

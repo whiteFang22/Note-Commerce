@@ -16,7 +16,6 @@ function AnteprimaPdf(props) {
             <li className="flex md:flex-row flex-col p-4 rounded-lg md:gap-16">
                <div className="flex basis-2/4">
                   <div>
-                     {/* <div className="border bg-slate-500 p-10"></div> */}
                      <PreviewPdfReader id={_id}></PreviewPdfReader>
                   </div>
                   <div className="ml-4 flex flex-col ">

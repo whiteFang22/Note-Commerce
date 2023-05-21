@@ -4,20 +4,13 @@ import Filters from '../components/Search/Filters'
 import AnteprimaPdf from '../components/Search/AnteprimaPdf'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
-
-
-// import { Document, Page, pdfjs } from 'react-pdf'
-
-// // necessary to use react-pdf
-// import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-// import 'react-pdf/dist/esm/Page/TextLayer.css';
-// pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+import SaveButton from '../components/Profilo/SaveButton'
 
 function Search(props) {
   const location = useLocation();
   const name = location.state?.search;
 
-  const [numPages, setNumPages] = useState(null)
+  // const [numPages, setNumPages] = useState(null)
   const [pdfs, setPdfs] = useState({})
 
   const [isLoading, setIsLoading] = useState(true)
@@ -69,7 +62,7 @@ function Search(props) {
       <section className='mt-10 mx-8'>
         {isLoading === false &&
           pdfs.map((pdf, index) => (
-            <AnteprimaPdf key={index} pdf={pdf}></AnteprimaPdf>
+            <AnteprimaPdf key={index} pdf={pdf}><SaveButton pdfId={pdf._id}/></AnteprimaPdf>
           ))
         }
       </section>
