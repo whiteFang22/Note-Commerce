@@ -8,7 +8,7 @@ import Condition from '../components/Condition'
 function Abbonamento() {
    return (
       <Condition>
-         <div className="bg-slate-200 h-screen">
+         <div className="bg-slate-200 min-h-screen">
             <Nav more_color="black" input="1"></Nav>
             <div className="page-content-wrapper">
                <Intro />

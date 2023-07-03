@@ -5,10 +5,6 @@ import FormInput from '../Home/FormInput'
 function InputResearch(props) {
    const { update, setUpdate, name } = props
 
-   function handleClick() {
-      setUpdate(update + 1)
-   }
-
    return (
       <div className={`form w-full ${props.Style} bg-white p-2 w-4xl rounded-full border border-tansparent hover:border-blue-400`}>
          {/* <form className="flex">
@@ -19,7 +15,7 @@ function InputResearch(props) {
                </svg>
             </Link>
          </form> */}
-         <FormInput handleClick={handleClick} name={name}/>
+         <FormInput name={name}/>
       </div>
    )
 }

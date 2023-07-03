@@ -1,5 +1,6 @@
 import React from 'react'
 import Fatturazione from '../Upgrade/Fatturazione'
+import PaypalButton from './PaypalButton'
 
 function Paga() {
    return (
@@ -17,8 +18,9 @@ function Paga() {
                   <span className="font-thin text-sm">Step 2 di 2</span>
                   <span className="font-bold">Scegli il tuo metodo di pagamento</span>
                </div>
-               <div className="flex">
-                  <button className="rounded-full w-full bg-sky-700 text-white font-semibold text-xl py-2">PayPal</button>
+               <div className="paypalButton p-5">
+                  <PaypalButton />
+                  {/* <button className="rounded-full w-full bg-sky-700 text-white font-semibold text-xl py-2">PayPal</button> */}
                </div>
             </div>
          </div>

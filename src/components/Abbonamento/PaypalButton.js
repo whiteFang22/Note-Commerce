@@ -5,20 +5,20 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const CLIENT_ID = "ARv3e5mFPhzvwVSVzEZo7EFXRETB4YZFhk9QkG-ipwkVl_5-QN9C_dYepH1lpFiAhhqbi07lMeRRXL75";
 
-function Prova() {
+function PaypalButton() {
   const buttonStyle = {
     layout: "vertical", // Opzioni: vertical | horizontal
     color: "blue", // Opzioni: gold | blue | silver | white | black
-    shape: "rect", // Opzioni: pill | rect
+    shape: "pill", // Opzioni: pill | rect
     label: "paypal", // Opzioni: checkout | credit | paypal | pay
   };
 
   return (
-    <PayPalScriptProvider options={{ "client-id": CLIENT_ID }}>
+    <PayPalScriptProvider options={{ "client-id": CLIENT_ID, "vault": true }}>
       <PayPalButtons
         style={buttonStyle}
-        createOrder={(data, actions) => {
-          // Logica per creare l'ordine
+        createSubscription={(data, actions) => {
+          // Logica per creare l'iscrizione
         }}
         onApprove={(data, actions) => {
           // Logica da eseguire dopo l'approvazione del pagamento
@@ -29,4 +29,4 @@ function Prova() {
     </PayPalScriptProvider>
   );
 }
-export default Prova
+export default PaypalButton

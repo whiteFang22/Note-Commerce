@@ -36,7 +36,7 @@ function PdfReader(props) {
    const pages = []
    let blur = "";
    for (let i = 1; i <= numPages; i++) {
-      if (i > 4 && !state.premium) blur = "blur-sm";
+      if (i > 2 && !state.premium) blur = "blur-sm";
       pages.push(
          <div className="bg-white p-2 rounded-xl mb-5 scroll-mt-[80px]" id={`page-${i}`}>
             <Page pageNumber={i} scale={scale} className={blur} />

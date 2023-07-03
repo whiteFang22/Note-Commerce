@@ -6,7 +6,8 @@ function Condition({ children }) {
    const [state] = useContext(StateContext);
    return (
       <div>
-         {!state.logged ?
+         {/* !state.logged */}
+         {false ?
             <Log />
             :
             <>

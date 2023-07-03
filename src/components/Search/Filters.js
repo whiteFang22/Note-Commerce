@@ -38,7 +38,7 @@ function Filters(props) {
             </div>
          </div>
 
-         <div className="basis-1/4 px-3">
+         {/* <div className="basis-1/4 px-3">
             <label htmlFor="course" className="text-sm font-thinh">Filtro per corso</label>
             <div>
                <select value={course} name="course" id="course" className="border rounded-lg w-full p-2" onChange={handleOptionChange}>
@@ -48,7 +48,7 @@ function Filters(props) {
                   <option value="Architettura dei calcolatori elettronici">Architettura dei calcolatori elettronici</option>
                </select>
             </div>
-         </div>
+         </div> */}
 
          <div className="basis-1/4 px-3">
             <label htmlFor="language" className="text-sm font-thinh">Filtra per lingua</label>

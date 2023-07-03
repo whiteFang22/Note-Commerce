@@ -4,7 +4,7 @@ import Content from '../components/Home/Content'
 
 function Home() {
   return (
-    <div className="bg-violet-studocu text-white h-screen">
+    <div className="bg-violet-studocu min-h-screen text-white">
       <Nav more_color="white"></Nav>
       <Content></Content>
     </div>
