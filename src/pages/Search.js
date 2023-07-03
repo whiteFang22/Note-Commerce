@@ -8,7 +8,7 @@ import SaveButton from '../components/Profilo/SaveButton'
 
 function Search(props) {
   const location = useLocation();
-  const name = location.state?.search;
+  let name = location.state?.search;
 
   // const [numPages, setNumPages] = useState(null)
   const [pdfs, setPdfs] = useState({})
@@ -20,7 +20,7 @@ function Search(props) {
   const [course, setCourse] = useState('')
   const [language, setLanguage] = useState("italiano")
 
-  const params = {
+  let params = {
     name: name,
     course: course,
     language: language,
@@ -28,6 +28,8 @@ function Search(props) {
   }
 
   const startUpdate = () => {
+    params.name = location.state?.search;
+    console.log(name)
     setIsLoading(true)
     console.log(university)
     const url = `http://localhost:3500/download`;
@@ -48,7 +50,6 @@ function Search(props) {
   useEffect(() => {
     startUpdate()
     console.log("ok")
-    if(pdfs.length==0)  console.log('pdfs')
   },[update]);
 
   const filterProps = {
@@ -59,7 +60,7 @@ function Search(props) {
 
   return (
     <>
-      <Nav input="1" more_color="black" nav_color="slate-200" searchInput={name} setUpdate={setUpdate} update={update} />
+      <Nav searchPage={1} input="1" more_color="black" nav_color="slate-200" searchInput={name} setUpdate={setUpdate} update={update} />
       <Filters filterProps={filterProps} setUpdate={setUpdate} setUniversity={setUniversity} setCourse={setCourse} setLanguage={setLanguage}></Filters>
       <section className='mt-10 mx-8'>
         {isLoading === false &&
@@ -80,7 +81,7 @@ function Search(props) {
         }
         {
           ( pdfs.length == 0 && isLoading === false ) &&
-          <span className='flex justify-center text-red-600'>Nessun contenuto trovato </span>
+          <span className='flex justify-center text-red-600 text-lg'>Nessun contenuto trovato </span>
         }
       </section>
     </>

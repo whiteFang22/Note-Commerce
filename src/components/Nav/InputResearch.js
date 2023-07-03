@@ -15,7 +15,7 @@ function InputResearch(props) {
                </svg>
             </Link>
          </form> */}
-         <FormInput name={name}/>
+         <FormInput searchPage={props.searchPage} setUpdate={setUpdate} update={update} name={name}/>
       </div>
    )
 }

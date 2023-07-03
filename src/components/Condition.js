@@ -7,7 +7,7 @@ function Condition({ children }) {
    return (
       <div>
          {/* !state.logged */}
-         {false ?
+         {!state.logged ?
             <Log />
             :
             <>

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-function Fatturazione() {
+function Fatturazione(props) {
+
    return (
       <div className="cshoose flex gap-3 mb-5">
-         <button className="flex flex-row border focus:ring-2 focus:ring-[#3092fa] hover:bg-slate-100 focus:bg-slate-100 rounded-3xl p-5">
+         <button onClick={() => props.updateValue(2.99)} className="flex flex-row border focus:ring-2 focus:ring-[#3092fa] hover:bg-slate-100 focus:bg-slate-100 rounded-3xl p-5">
             <div className="flex flex-col text-left">
                <p>Fatturazione <b>annuale</b></p>
                <div>
@@ -17,7 +18,7 @@ function Fatturazione() {
                </div>
             </div>
          </button>
-         <button className="flex flex-row border focus:ring-2 focus:ring-[#3092fa] hover:bg-slate-100 focus:bg-slate-100 rounded-3xl p-5">
+         <button onClick={() => props.updateValue(4.99)} className="flex flex-row border focus:ring-2 focus:ring-[#3092fa] hover:bg-slate-100 focus:bg-slate-100 rounded-3xl p-5">
             <div className="flex flex-col text-left">
                <p>Fatturazione <b>trimestrale</b></p>
                <div>
