@@ -45,17 +45,15 @@ const checkDuplicateUser = async (req, res, next) => {
 // add new user into the db
 app.post('/registration', checkDuplicateUser, async (req, res) => {
   try {
-    const { name, surname, email, password, savedPdfs } = req.body;
+    const { name, surname, email, password, university } = req.body;
 
     // creates the new user and saves it into the db
-    const user = await User.create({ name, surname, email, password, savedPdfs })
-    const { premium, _id } = user
+    const user = await User.create({ name, surname, email, password, university })
+    const { _id } = user
 
     res.status(200).json({
       message: "Utente inserito correttamente nel database",
-      user: email,
       userId: _id,
-      premium: premium
     });
   } catch {
     res.status(500).json({
@@ -124,19 +122,20 @@ app.post('/checkSubscription', async (req, res) => {
 
 // check if the user exists and have the rigth password
 app.post('/login', async (req, res) => {
-  const { email, password, } = req.body;
+  const { email, password } = req.body;
 
   try {
     // Cerca l'utente nel database
     const user = await User.findOne({ email, password });
 
     if (user) {
-      const { _id, premium } = user
+      const { _id, premium, university } = user
       res.json({
         message: 'L\'utente esiste nel database.',
         user: email,
         userId: _id,
-        premium: premium
+        premium: premium,
+        university: university
       });
     } else {
       res.status(500).json({
@@ -158,8 +157,13 @@ app.post('/upload', upload.single('pdf'), async (req, res) => {
     const pdfDoc = await PDFLib.PDFDocument.load(content);
     const numPages = pdfDoc.getPageCount();
 
-    const { name, university, year, course, language } = req.body;
-    const pdf = await Pdf.create({ name, numPages, university, year, content, course, language })
+    const { name, university, year, course, language, creator } = req.body;
+    const pdf = await Pdf.create({ name, numPages, university, year, content, course, language, creator })
+
+    await User.updateOne(
+      { _id: creator },
+      { $push: { createdPdfs: pdf._id } }
+    )
 
     res.send("Pdf inserito correttamente nel database")
   } catch (err) {
@@ -224,7 +228,7 @@ app.get('/downloadOne', async (req, res) => {
 })
 
 // return saved pdfs by a specific user
-async function retrievePDFsMiddleware(req, res, next) {
+async function retrieveSavedPDFsMiddleware(req, res, next) {
   const { _id } = req.body
   const user = await User.findById(_id);
   const pdfs = [];
@@ -241,15 +245,40 @@ async function retrievePDFsMiddleware(req, res, next) {
     req.pdfs = pdfs; // Memorizza gli oggetti PDF nell'oggetto di richiesta
     next();
   } catch (error) {
-    res.status(500).json({ error: 'Errore durante il recupero degli oggetti PDF' });
+    res.status(500).json({ error: 'Errore durante il recupero degli oggetti PDF salvati' });
   }
 }
-app.post('/userPdfs', retrievePDFsMiddleware, (req, res) => {
+app.post('/userSavedPdfs', retrieveSavedPDFsMiddleware, (req, res) => {
+  res.json(req.pdfs); // Invia gli oggetti PDF come risposta
+});
+
+// return created pdfs by a specific user
+async function retrieveCreatedPDFsMiddleware(req, res, next) {
+  const { _id } = req.body
+  const user = await User.findById(_id);
+  const pdfs = [];
+
+  try {
+    // to use await inside a no async function like map
+    await Promise.all(
+      user.createdPdfs.map(async (pdfId) => {
+        const pdf = await Pdf.findById(pdfId);
+        // console.log(pdfId)
+        pdfs.push(pdf);
+      })
+      );
+    req.pdfs = pdfs; // Memorizza gli oggetti PDF nell'oggetto di richiesta
+    next();
+  } catch (error) {
+    res.status(500).json({ error: 'Errore durante il recupero degli oggetti PDF creati' });
+  }
+}
+app.post('/userCreatedPdfs', retrieveCreatedPDFsMiddleware, (req, res) => {
   res.json(req.pdfs); // Invia gli oggetti PDF come risposta
 });
 
 // removes a saved pdf from a specific user
-app.post('/removePdf', async (req, res) => {
+app.post('/removeSavedPdf', async (req, res) => {
   const { userId, pdfId } = req.body
 
   try {
@@ -260,7 +289,29 @@ app.post('/removePdf', async (req, res) => {
     res.status(200).send("pdf rimosso dai preferiti")
 
   } catch (error) {
-    res.status(500).json({ error: 'Errore durante la rimozione del PDF' });
+    res.status(500).json({ error: 'Errore durante la rimozione del PDF salvato' });
+  }
+})
+
+// removes a created pdf from a specific user
+app.post('/removeCreatedPdf', async (req, res) => {
+  const { userId, pdfId } = req.body
+
+  try {
+    
+    await Pdf.findByIdAndRemove(pdfId )
+    console.log("ok")
+
+    await User.updateOne(
+      { _id: userId },
+      { $pull: { createdPdfs: pdfId } }
+    )
+    res.status(200).send("pdf rimosso correttamente")
+
+
+
+  } catch (error) {
+    res.status(500).json({ error: 'Errore durante la rimozione del PDF creato' });
   }
 })
 

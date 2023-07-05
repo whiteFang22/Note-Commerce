@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import UploadModal from './UploadModal';
 
-function Upload() {
+function Upload(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadModal, setUploadModal] = useState(false)
   const [responseText, setResponseText] = useState()
@@ -17,12 +17,10 @@ function Upload() {
     else  setUploadModal(true)
   }
 
-
-
   return (
     <div>
-      {uploadModal && <UploadModal setResponseText={setResponseText} setResponseColor={setResponseColor} toggleModal={toggleModal} selectedFile={selectedFile} />}
-      <input className='' type="file" onChange={handleFileInputChange} />
+      {uploadModal && <UploadModal setReloading={props.setReloading} setResponseText={setResponseText} setResponseColor={setResponseColor} toggleModal={toggleModal} selectedFile={selectedFile} />}
+      <input className='' type="file" onChange={handleFileInputChange} on/>
       <span className={responseColor}>{responseText}</span>
     </div>
   )

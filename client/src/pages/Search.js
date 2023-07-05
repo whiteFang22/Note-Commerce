@@ -29,7 +29,7 @@ function Search(props) {
 
   const startUpdate = () => {
     params.name = location.state?.search;
-    if (name=='') return
+    if (name==='') return
     // only if input is not empty
     setIsLoading(true)
     console.log(university)
@@ -80,7 +80,7 @@ function Search(props) {
           </>
         }
         {
-          ( pdfs.length == 0 && isLoading === false ) &&
+          ( pdfs.length === 0 && isLoading === false ) &&
           <span className='flex justify-center text-red-600 text-lg'>Nessun contenuto trovato </span>
         }
       </section>

@@ -9,6 +9,7 @@ function Log(props) {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [university, setUniversity] = useState("")
 
   const [authenticationError, setAuthenticationError] = useState(false)
 
@@ -19,15 +20,18 @@ function Log(props) {
         name: name,
         surname: surname,
         email: email,
-        password: password
+        password: password,
+        university: university
       })
         .then(response => {
           // Gestisci la risposta di successo
-          const { message, user } = response.data
-          console.log(message)
+          const { userId } = response.data
           setState({
-            user: user,
-            logged: true
+            user: email,
+            userId: userId,
+            university: university,
+            logged: true,
+            premium: false
           });
         })
         .catch(error => {
@@ -63,25 +67,25 @@ function Log(props) {
             userId: userId
           })
             .then(response => {
-              const { message, user, premium } = response.data
-              console.log(message, premium)
+              const { user, premium, university } = response.data
               setState({
                 user: user,
                 userId: userId,
                 logged: true,
-                premium: premium
+                premium: premium,
+                university: university
               });
               setAuthenticationError(false)
             })
         }
         else {
-          const { message, user, premium } = response.data
-          console.log(message, premium)
+          const { user, premium, university } = response.data
           setState({
             user: user,
             userId: userId,
             logged: true,
-            premium: premium
+            premium: premium,
+            university: university
           });
           setAuthenticationError(false)
         }
@@ -127,6 +131,11 @@ function Log(props) {
                 onChange={(e) => {
                   setSurname(e.target.value);
                 }} />
+              <label className=''>Università</label>
+              <input type="text" required className={!authenticationError ? 'border rounded-lg px-2 py-1' : 'border border-red-600 rounded-lg px-2 py-1'} placeholder='Università'
+                onChange={(e) => {
+                  setUniversity(e.target.value);
+                }} />
             </>
           )}
 
@@ -139,8 +148,8 @@ function Log(props) {
           <input type="password" required className={!authenticationError ? 'border rounded-lg px-2 py-1' : 'border border-red-600 rounded-lg px-2 py-1'} placeholder='Password'
             onChange={(e) => {
               setPassword(e.target.value);
-
             }} />
+
 
           <Link className="text-sm text-[#3092fa] hover:text-[#2c67e7] justify-self-end">Ho dimenticato la password</Link>
 

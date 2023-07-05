@@ -7,6 +7,7 @@ const initialState = {
    user: "",
    userId: "",
    logged: false,
+   university: "",
    premium: false
 };
 

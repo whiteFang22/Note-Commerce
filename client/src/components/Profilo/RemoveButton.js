@@ -5,10 +5,14 @@ import { StateContext } from '../States';
 function RemoveButton(props) {
    const [state] = useContext(StateContext);
    const userId = state.userId
-   const { setReloading, pdfId } = props
+   const { setReloading, pdfId, type } = props
 
-   async function removePdf(){
-      await axios.post('http://localhost:3500/removePdf', {
+   let path
+   if (type == "saved") path = "removeSavedPdf"
+   else path = "removeCreatedPdf"
+   path = 'http://localhost:3500/' + path
+   async function removePdf() {
+      await axios.post(path, {
          userId: userId,
          pdfId: pdfId
       })

@@ -52,6 +52,7 @@ function PaypalButton(props) {
                 setState({
                   user: state.user,
                   userId: state.userId,
+                  university: state.university,
                   logged: true,
                   premium: true
                 })
@@ -65,30 +66,6 @@ function PaypalButton(props) {
         }}
       />
     </PayPalScriptProvider>
-
-    // <PayPalScriptProvider options={{ 
-    //   "client-id": CLIENT_ID, 
-    //   "vault": true,
-    //   "currency": "EUR",
-    //   "intent": "subscription" ,
-    //   "components": "buttons"
-    //   }}>
-    //   <PayPalButtons
-    //     style={buttonStyle}
-    //     forceReRender={[value]}
-    //     // creo l'ordine
-    //     createSubscription={(data, actions) => {
-    //       return actions.subscription.create({
-    //         'plan_id': 'P-3KC12500464878940MSRORUI'
-    //       })
-    //       .then((orderId) => {
-    //         // Your code here after create the order
-    //         return orderId;
-    //       });  
-    //     }}
-
-    //   />
-    // </PayPalScriptProvider>
 
   );
 }

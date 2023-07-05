@@ -22,6 +22,7 @@ function UploadModal(props) {
          formData.append('university', university);
          formData.append('course', course);
          formData.append('language', language);
+         formData.append('creator', state.userId);
 
          axios.post('http://localhost:3500/upload', formData)
             .then((response) => {
@@ -34,12 +35,14 @@ function UploadModal(props) {
                   setState({
                      user: state.user,
                      userId: state.userId,
+                     university: state.university,
                      logged: true,
                      premium: true
                    })
                })
                props.setResponseText('caricamento andato a buon fine')
                props.setResponseColor('text-green-500')
+               props.setReloading(true)
             })
             .catch((error) => {
                console.error('Errore durante la richiesta:', error);

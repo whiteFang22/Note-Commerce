@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
    name: String,
    surname: String,
+   university: String,
    email: {
       type: String,
       required: true,
@@ -11,7 +12,12 @@ const userSchema = new mongoose.Schema({
    },
    password: String,
    savedPdfs: {
-      type: [String]
+      type: [String],
+      default: []
+   },
+   createdPdfs: {
+      type: [String],
+      default: []
    },
    premium: {
       type: Boolean,
