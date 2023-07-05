@@ -43,16 +43,7 @@ function Content(props) {
             <Upload></Upload>
          </div>
          <div className='mt-5'>
-            <span className='font-bold text-lg'>Appunti di lezione</span>
-            <div className='flex gap-16 text-center items-baseline'>
-               <div className="text-start basis-2/4">
-                  <OrderBy name="Data" />
-                  <OrderBy name="Voti Positivi" />
-               </div>
-               <span className='text-[#9ea9b5] flex-1 invisible md:visible'>Anno</span>
-               <span className='text-[#9ea9b5] flex-1 invisible md:visible 2xl:ml-7'>Voti</span>
-               <span className='flex-1'></span>
-            </div>
+            <span className='font-bold text-lg'>Appunti salvati:</span>
             <div>
                {(isLoading === false && pdfs.length !== 0) &&
                   pdfs.map((pdf, index) => (
@@ -67,7 +58,13 @@ function Content(props) {
                      </svg>
                   </div>
                }
+               {(isLoading === false && pdfs.length == 0) &&
+                  <span>nessun contenuto salvato</span>
+               }
             </div>
+
+            <span className='font-bold text-lg'>Appunti caricati:</span>
+            
          </div>
       </div>
    )

@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import axios from 'axios'
+import { StateContext } from '../States'
 
 function UploadModal(props) {
    const toggleModal = props.toggleModal
    const selectedFile = props.selectedFile
+   const [state, setState] = useContext(StateContext);
 
    const [name, setName] = useState(undefined)
    const [year, setYear] = useState(undefined)
@@ -25,9 +27,24 @@ function UploadModal(props) {
             .then((response) => {
                // Gestisci la risposta dal backend
                console.log('Risposta dal backend:', response.data);
+               axios.post('http://localhost:3500/create-subscription',{
+                  userId: state.userId
+               })
+               .then (response => {
+                  setState({
+                     user: state.user,
+                     userId: state.userId,
+                     logged: true,
+                     premium: true
+                   })
+               })
+               props.setResponseText('caricamento andato a buon fine')
+               props.setResponseColor('text-green-500')
             })
             .catch((error) => {
                console.error('Errore durante la richiesta:', error);
+               props.setResponseText('qualcosa è andato storto, riprova')
+               props.setResponseColor('text-red-500')
             });
       } else {
          console.log('Riempi tutti i campi');

@@ -29,7 +29,8 @@ function Search(props) {
 
   const startUpdate = () => {
     params.name = location.state?.search;
-    console.log(name)
+    if (name=='') return
+    // only if input is not empty
     setIsLoading(true)
     console.log(university)
     const url = `http://localhost:3500/download`;
@@ -49,7 +50,6 @@ function Search(props) {
 
   useEffect(() => {
     startUpdate()
-    console.log("ok")
   },[update]);
 
   const filterProps = {

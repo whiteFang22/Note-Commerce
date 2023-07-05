@@ -9,7 +9,7 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 function AnteprimaPdf(props) {
-   const { _id, name, course, university, numPages, year } = props.pdf
+   const { _id, name, course, university, numPages, year, creator } = props.pdf
    return (
       <div className="border-y hover:bg-sky-50">
          <ul className='mx-10'>
@@ -20,7 +20,7 @@ function AnteprimaPdf(props) {
                   </div>
                   <div className="ml-4 flex flex-col ">
                      <div className='line-clamp-2'>
-                        <Link to="/document" state={{_id:{_id}}} className="hover:underline text-blue-400">{name} - {course}</Link>
+                        <Link to="/document" state={{_id:{_id, creator}}} className="hover:underline text-blue-400">{name} - {course}</Link>
                      </div>
                      <div className="flex">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-6">

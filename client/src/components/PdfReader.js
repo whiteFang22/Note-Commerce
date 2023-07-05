@@ -20,9 +20,9 @@ function PdfReader(props) {
    }
    const [pdfData, setPdfData] = useState(null);
    const _id = props._id
-   // console.log(id)
+
    useEffect(() => {
-      fetch(`http://localhost:3500/downloadOne?_id=${_id}`) // Aggiungi l'URL corretto del tuo endpoint per ottenere il file PDF
+      fetch(`http://localhost:3500/downloadOne?_id=${_id}`)
          .then(response => response.blob())
          .then(data => {
             const fileReader = new FileReader();
@@ -36,7 +36,8 @@ function PdfReader(props) {
    const pages = []
    let blur = "";
    for (let i = 1; i <= numPages; i++) {
-      if (i > 2 && !state.premium) blur = "blur-sm";
+      // nascondo le pagine se l'utente è non premiume se non è il creatore
+      if ((i > 2) && !(state.premium) && !(state.userId == props.creator)) blur = "blur-sm";
       pages.push(
          <div className="bg-white p-2 rounded-xl mb-5 scroll-mt-[80px]" id={`page-${i}`}>
             <Page pageNumber={i} scale={scale} className={blur} />

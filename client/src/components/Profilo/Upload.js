@@ -4,6 +4,8 @@ import UploadModal from './UploadModal';
 function Upload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadModal, setUploadModal] = useState(false)
+  const [responseText, setResponseText] = useState()
+  const [responseColor, setResponseColor] = useState()
 
   const handleFileInputChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -19,8 +21,9 @@ function Upload() {
 
   return (
     <div>
-      {uploadModal && <UploadModal toggleModal={toggleModal} selectedFile={selectedFile} />}
+      {uploadModal && <UploadModal setResponseText={setResponseText} setResponseColor={setResponseColor} toggleModal={toggleModal} selectedFile={selectedFile} />}
       <input className='' type="file" onChange={handleFileInputChange} />
+      <span className={responseColor}>{responseText}</span>
     </div>
   )
 }

@@ -6,6 +6,9 @@ import { useLocation } from 'react-router-dom'
 function Document() {
    const location = useLocation();
    const _id = location.state?._id._id;
+   console.log(location.state?._id)
+   const creator = location.state?._id.creator;
+   console.log(creator)
 
    return (
       <div className='scroll-smooth'>
@@ -45,7 +48,7 @@ function Document() {
                ]}
                className='sticky top-0 z-30 text-black bg-transparent' /> */}
          </Nav> 
-         <PdfReader _id={_id}/>
+         <PdfReader _id={_id} creator={creator}/>
 
       </div>
    )

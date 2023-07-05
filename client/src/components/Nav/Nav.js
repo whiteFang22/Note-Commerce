@@ -39,8 +39,8 @@ function Nav(props) {
       <div className={navclass}>
 
          <div className={left_nav}>
-            <div className="ml-12 flex items-center mr-12">
-               <More color={props.more_color} onClick={toggleSidebar}/>
+            <div className="ml-12 flex items-center mr-12 mt-5">
+               {/* <More color={props.more_color} onClick={toggleSidebar}/> */}
                <Studocu />
             </div>
             {/* con questo conditional posso controllare quando visualizzare nella Nav l'input */}

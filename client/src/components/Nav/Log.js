@@ -10,6 +10,8 @@ function Log(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [authenticationError, setAuthenticationError] = useState(false)
+
   async function registration() {
     try {
       // Esegui la richiesta POST al server utilizzando Axios
@@ -19,29 +21,29 @@ function Log(props) {
         email: email,
         password: password
       })
-      .then(response => {
-        // Gestisci la risposta di successo
-        const {message, user} = response.data
-        console.log(message)
-        setState({
-          user: user,
-          logged: true
+        .then(response => {
+          // Gestisci la risposta di successo
+          const { message, user } = response.data
+          console.log(message)
+          setState({
+            user: user,
+            logged: true
+          });
+        })
+        .catch(error => {
+          // Gestisci l'errore
+          if (error.response) {
+            // La richiesta è stata effettuata e il server ha risposto con uno stato di errore
+            console.error('Errore di risposta del server:', error.response.status);
+            console.log('Messaggio di errore del server:', error.response.data);
+          } else if (error.request) {
+            // La richiesta è stata effettuata ma non è stata ricevuta alcuna risposta
+            console.error('Nessuna risposta ricevuta dal server:', error.request);
+          } else {
+            // Si è verificato un errore durante la configurazione della richiesta
+            console.error('Errore durante la configurazione della richiesta:', error.message);
+          }
         });
-      })
-      .catch(error => {
-        // Gestisci l'errore
-        if (error.response) {
-          // La richiesta è stata effettuata e il server ha risposto con uno stato di errore
-          console.error('Errore di risposta del server:', error.response.status);
-          console.log('Messaggio di errore del server:', error.response.data);
-        } else if (error.request) {
-          // La richiesta è stata effettuata ma non è stata ricevuta alcuna risposta
-          console.error('Nessuna risposta ricevuta dal server:', error.request);
-        } else {
-          // Si è verificato un errore durante la configurazione della richiesta
-          console.error('Errore durante la configurazione della richiesta:', error.message);
-        }
-      });
 
     } catch (error) {
       console.error('Errore durante la richiesta GET:', error);
@@ -50,21 +52,42 @@ function Log(props) {
 
   async function singIn() {
     axios.post('http://localhost:3500/login', {
-        email: email,
-        password: password
-      })
+      email: email,
+      password: password
+    })
       .then(response => {
         // Gestisci la risposta di successo
-        const {message, user, userId, premium} = response.data
-        console.log(message, premium)
-        setState({
-          user: user,
-          userId: userId,
-          logged: true,
-          premium: premium
-        });
+        const { userId, premium } = response.data
+        if (premium) {
+          axios.post('http://localhost:3500/checkSubscription', {
+            userId: userId
+          })
+            .then(response => {
+              const { message, user, premium } = response.data
+              console.log(message, premium)
+              setState({
+                user: user,
+                userId: userId,
+                logged: true,
+                premium: premium
+              });
+              setAuthenticationError(false)
+            })
+        }
+        else {
+          const { message, user, premium } = response.data
+          console.log(message, premium)
+          setState({
+            user: user,
+            userId: userId,
+            logged: true,
+            premium: premium
+          });
+          setAuthenticationError(false)
+        }
       })
       .catch(error => {
+        setAuthenticationError(true)
         // Gestisci l'errore
         if (error.response) {
           // La richiesta è stata effettuata e il server ha risposto con uno stato di errore
@@ -80,7 +103,7 @@ function Log(props) {
       });
   }
 
-  async function sign(e){
+  async function sign(e) {
     e.preventDefault();
     if (!props.registration) singIn()
     else registration()
@@ -95,28 +118,29 @@ function Log(props) {
           {props.registration && (
             <>
               <label className=''>Nome</label>
-              <input type="text" required className='border rounded-lg px-2 py-1 ' placeholder='Nome' 
-              onChange={(e) => {
-                setName(e.target.value);
-              }}/>
+              <input type="text" required className='border rounded-lg px-2 py-1 ' placeholder='Nome'
+                onChange={(e) => {
+                  setName(e.target.value);
+                }} />
               <label className=''>Cognome</label>
-              <input type="text" required className='border rounded-lg px-2 py-1 ' placeholder='Cognome' 
-              onChange={(e) => {
-                setSurname(e.target.value);
-              }}/>
+              <input type="text" required className='border rounded-lg px-2 py-1 ' placeholder='Cognome'
+                onChange={(e) => {
+                  setSurname(e.target.value);
+                }} />
             </>
           )}
 
           <label className=''>Email</label>
-          <input  pattern='[A-z0-9\.\+_-]+@[A-z0-9\._-]+\.[A-z]{2,6}' required className='border rounded-lg px-2 py-1 ' placeholder='Email' 
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}/>
+          <input pattern='[A-z0-9\.\+_-]+@[A-z0-9\._-]+\.[A-z]{2,6}' required className={!authenticationError ? 'border rounded-lg px-2 py-1 ' : 'border border-red-500 rounded-lg px-2 py-1 '} placeholder='Email'
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }} />
           <label className=''>Password</label>
-          <input type="password" required className='border rounded-lg px-2 py-1 ' placeholder='Password' 
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}/>
+          <input type="password" required className={!authenticationError ? 'border rounded-lg px-2 py-1' : 'border border-red-600 rounded-lg px-2 py-1'} placeholder='Password'
+            onChange={(e) => {
+              setPassword(e.target.value);
+
+            }} />
 
           <Link className="text-sm text-[#3092fa] hover:text-[#2c67e7] justify-self-end">Ho dimenticato la password</Link>
 
