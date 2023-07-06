@@ -7,6 +7,7 @@ import Registrati from "./Registrati";
 import Dropdown from "./Dropdown/Dropdown";
 import Sidebar from "../Sidebar/Sidebar";
 import { StateContext } from "../States";
+import { Link } from "react-router-dom";
 
 export const UserContext = createContext();
 
@@ -57,6 +58,7 @@ function Nav(props) {
                <>
                   <Accedi />
                   <Registrati />
+                  <Link to="/Upgrade" className="ml-3">Info abbonamento</Link>
                </>
                :
                <Dropdown />

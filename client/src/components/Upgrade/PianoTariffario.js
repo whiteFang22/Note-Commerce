@@ -9,7 +9,7 @@ function PianoTariffario() {
             <span className="font-bold text-xl tracking-wide">Scegli il piano tariffario</span>
             <span className="bg-lime-300 rounded-lg px-2 font-bold flex self-center text-xl">Premium @</span>
          </div>
-         <Fatturazione />
+         <Fatturazione page="Upgrade"/>
          <ButtonAbb />
       </section>
    )

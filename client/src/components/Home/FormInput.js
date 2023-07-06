@@ -7,7 +7,6 @@ function FormInput(props) {
 
    const updateSearch = () => {
       if (searchInput.current){
-         console.log(searchInput.current.value)
          setSearch(searchInput.current.value)
       }
    }

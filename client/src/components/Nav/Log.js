@@ -33,8 +33,10 @@ function Log(props) {
             logged: true,
             premium: false
           });
+          setAuthenticationError(false)
         })
         .catch(error => {
+          setAuthenticationError(true)
           // Gestisci l'errore
           if (error.response) {
             // La richiesta è stata effettuata e il server ha risposto con uno stato di errore
@@ -117,17 +119,17 @@ function Log(props) {
     <div className="modal w-screen h-screen fixed bottom-0 left-0 right-0 top-0">
       <div onClick={props.toggleModal} className='overlay w-screen h-screen fixed bottom-0 left-0 right-0 top-0 bg-transparent/30'></div>
       <div className="modal-content grid gap-y-3 relative bg-white text-black mx-auto mt-[10vh] py-4 px-7 w-[400px] border-2 rounded-3xl">
-        <span className="font-bold text-lg mb-5">Benvenuto su Studocu</span>
+        <Link to="/" className="font-bold text-lg mb-5 hover:underline">Benvenuto su Studocu</Link>
         <form onSubmit={sign} className="contents form">
           {props.registration && (
             <>
               <label className=''>Nome</label>
-              <input type="text" required className='border rounded-lg px-2 py-1 ' placeholder='Nome'
+              <input type="text" required className={!authenticationError ? 'border rounded-lg px-2 py-1' : 'border border-red-600 rounded-lg px-2 py-1'} placeholder='Nome'
                 onChange={(e) => {
                   setName(e.target.value);
                 }} />
               <label className=''>Cognome</label>
-              <input type="text" required className='border rounded-lg px-2 py-1 ' placeholder='Cognome'
+              <input type="text" required className={!authenticationError ? 'border rounded-lg px-2 py-1' : 'border border-red-600 rounded-lg px-2 py-1'} placeholder='Cognome'
                 onChange={(e) => {
                   setSurname(e.target.value);
                 }} />
@@ -150,11 +152,12 @@ function Log(props) {
               setPassword(e.target.value);
             }} />
 
-
-          <Link className="text-sm text-[#3092fa] hover:text-[#2c67e7] justify-self-end">Ho dimenticato la password</Link>
-
           <button type="submit" className='broder rounded-full p-2 text-white bg-[#3092fa] hover:bg-[#2c86e7]'>Accedi</button>
         </form>
+
+        {authenticationError &&
+          <span className='text-red-600'>errore nella registrazione</span>
+        }
 
         {props.registration ?
           <div className='flex flex-row justify-center my-3'>

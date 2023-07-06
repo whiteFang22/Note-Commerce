@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Fatturazione from '../Upgrade/Fatturazione'
 import PaypalButton from './PaypalButton'
 
@@ -17,12 +17,12 @@ function Paga() {
                   <span className="font-thin text-sm">Step 1 di 2</span>
                   <span className="font-bold">Scegli il piano tariffario</span>
                </div>
-               <Fatturazione updateValue={updateValue}/>
+               <Fatturazione page="Abbonamento" updateValue={updateValue}/>
             </div>
             <div className="method-picker">
                <div className="flex flex-col">
                   <span className="font-thin text-sm">Step 2 di 2</span>
-                  <span className="font-bold">Scegli il tuo metodo di pagamento</span>
+                  <span className="font-bold">Paga velocemente con Paypal</span>
                </div>
                <div className="paypalButton p-5">
                   <PaypalButton value={value}/>

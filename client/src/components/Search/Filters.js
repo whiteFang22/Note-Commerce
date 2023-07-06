@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 
 function Filters(props) {
-   const { setUpdate,  setUniversity, setCourse, setLanguage } = props
+   const { setUpdate, setUniversity, setCourse, setLanguage } = props
    const [loading, setLoading] = useState(false)
    const [selectedOption, setSelectedOption] = useState('');
-   const { university, language, course, update } = props.filterProps
+   const { university, language, course, update, universities, languages } = props.filterProps
 
    const handleOptionChange = (event) => {
       const value = event.target.value
@@ -19,9 +20,13 @@ function Filters(props) {
             setLanguage(value);
             break
       }
-      setUpdate(update+1)
+      setUpdate(update + 1)
       console.log(update)
    };
+
+   useEffect(() => {
+      setUpdate(update + 1)
+   }, [])
 
    return (
       <div className="mx-10 mt-6 filters flex flex-wrap flex-col lg:flex-row">
@@ -31,9 +36,11 @@ function Filters(props) {
             <div>
                <select value={university} name="university" id="university" className="border rounded-lg w-full p-2" onChange={handleOptionChange}>
                   <option value={undefined}></option>
-                  <option value="UNIPR">UNIPR</option>
-                  <option value="UNIPA">UNIPA</option>
-                  <option value="UNITO">UNITO</option>
+                  {universities.map((name, index) => (
+                     <option key={index} value={name}>
+                        {name}
+                     </option>
+                  ))}
                </select>
             </div>
          </div>
@@ -54,9 +61,11 @@ function Filters(props) {
             <label htmlFor="language" className="text-sm font-thinh">Filtra per lingua</label>
             <div>
                <select value={language} name="language" id="language" className="border rounded-lg w-full p-2" onChange={handleOptionChange}>
-                  <option value="italiano">italiano</option>
-                  <option value="inglese">inglese</option>
-                  <option value="spagnolo">spagnolo</option>
+                  {languages.map((name, index) => (
+                     <option key={index} value={name}>
+                        {name}
+                     </option>
+                  ))}
                </select>
             </div>
          </div>

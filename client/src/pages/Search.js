@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Nav from '../components/Nav/Nav'
 import Filters from '../components/Search/Filters'
 import AnteprimaPdf from '../components/Search/AnteprimaPdf'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import SaveButton from '../components/Profilo/SaveButton'
+import { StateContext } from '../components/States'
 
 function Search(props) {
   const location = useLocation();
@@ -12,6 +13,12 @@ function Search(props) {
 
   // const [numPages, setNumPages] = useState(null)
   const [pdfs, setPdfs] = useState({})
+  const [savedPdfs, setSavedPdfs] = useState([])
+  const [universities, setUniversities] = useState([])
+  const [languages, setLanguages] = useState([])
+
+  const [state] = useContext(StateContext);
+  const userId = state.userId
 
   const [isLoading, setIsLoading] = useState(true)
   const [update, setUpdate] = useState(0)
@@ -29,7 +36,7 @@ function Search(props) {
 
   const startUpdate = () => {
     params.name = location.state?.search;
-    if (name==='') return
+    if (name === '') return
     // only if input is not empty
     setIsLoading(true)
     console.log(university)
@@ -48,14 +55,44 @@ function Search(props) {
       });
   }
 
+  const retriveSavedPdfsIds = async (userId) => {
+    try {
+      const response = await axios.post('http://localhost:3500/savedPdfsIds', {
+        _id: userId
+      });
+      setSavedPdfs(response.data)
+    } catch (error) {
+      // Gestisci gli errori qui
+      console.error(error);
+    }
+  };
+  
+  const retriveUniversitiesAndLanguages = async () => {
+    try {
+      const response1 = await axios.get('http://localhost:3500/universities')
+      const response2 = await axios.get('http://localhost:3500/languages')
+      setUniversities(response1.data)
+      setLanguages(response2.data)
+
+    } catch(error) {
+      console.error(error);
+    }  
+ }
+
+
   useEffect(() => {
+    retriveUniversitiesAndLanguages()
     startUpdate()
-  },[update]);
+    if (state.logged) retriveSavedPdfsIds(userId)
+  }, [update]);
+
 
   const filterProps = {
     update: update,
     university: university,
-    language: language
+    language: language,
+    universities: universities,
+    languages: languages
   }
 
   return (
@@ -65,7 +102,7 @@ function Search(props) {
       <section className='mt-10 mx-8'>
         {isLoading === false &&
           pdfs.map((pdf, index) => (
-            <AnteprimaPdf key={index} pdf={pdf}><SaveButton pdfId={pdf._id} /></AnteprimaPdf>
+            <AnteprimaPdf key={index} pdf={pdf}><SaveButton pdfId={pdf._id} savedPdfs={savedPdfs} /></AnteprimaPdf>
           ))
         }
         {isLoading === true &&
@@ -80,7 +117,7 @@ function Search(props) {
           </>
         }
         {
-          ( pdfs.length === 0 && isLoading === false ) &&
+          (pdfs.length === 0 && isLoading === false) &&
           <span className='flex justify-center text-red-600 text-lg'>Nessun contenuto trovato </span>
         }
       </section>

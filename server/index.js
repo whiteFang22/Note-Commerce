@@ -6,6 +6,8 @@ mongoose.connect('mongodb://localhost:27017/note-commerce', {
 });
 const User = require('./Users')
 const Pdf = require('./Pdf')
+const Uni = require('./University')
+const Language = require('./Languages')
 // const fetchssss = require('node-fetch');
 
 
@@ -46,9 +48,8 @@ const checkDuplicateUser = async (req, res, next) => {
 app.post('/registration', checkDuplicateUser, async (req, res) => {
   try {
     const { name, surname, email, password, university } = req.body;
-
     // creates the new user and saves it into the db
-    const user = await User.create({ name, surname, email, password, university })
+    const user = await User.create({ name, surname, email, password, university})
     const { _id } = user
 
     res.status(200).json({
@@ -63,62 +64,6 @@ app.post('/registration', checkDuplicateUser, async (req, res) => {
 
 })
 
-// check subscription validity
-app.post('/checkSubscription', async (req, res) => {
-  const { userId } = req.body;
-
-  try {
-    // Cerca l'utente nel database
-    const user = await User.findById(userId);
-
-    let { subscriptionDate, subscriptionType, premium, email, _id } = user
-    const currentDate = new Date()
-
-    let message
-    let maxMonth
-    if (premium && subscriptionType != "root") {
-      console.log("qui")
-      // Calcolo della differenza in millisecondi tra le due date
-      const timeDifference = currentDate.getTime() - subscriptionDate.getTime();
-      // Conversione della differenza in millisecondi in mesi
-      const millisecondsInMonth = 1000 * 60 * 60 * 24 * 30; // approssimazione: 30 giorni al mese
-      const monthsDifference = timeDifference / millisecondsInMonth;
-
-      switch (subscriptionType) {
-        case "Anunale":
-          maxMonth = 12
-          break
-        case "Trimestrale":
-          maxMonth = 3
-          break
-      }
-
-      if (monthsDifference >= maxMonth) {
-        message = 'Sono passati' + maxMonth + 'mesi. Il tuo abbonamento è scaduto!!!'
-        await User.updateOne(
-          { _id: _id },
-          { $set: { premium: false, subscriptionType: "", subscriptionDate: null } }
-        )
-        premium = false
-      }
-      else {
-        message = 'Il tuo abbonamento è ancora valido.'
-      }
-    }
-    else {
-      message = "abbonamento valido"
-    }
-    res.json({
-      message: message,
-      user: email,
-      userId: _id,
-      premium: premium
-    });
-  } catch (err) {
-    console.error('Errore nella verifica dell\'abbonamento:', err);
-    res.status(500).send('Si è verificato un errore nella verifica dell\'abbonamento.');
-  }
-})
 
 // check if the user exists and have the rigth password
 app.post('/login', async (req, res) => {
@@ -130,6 +75,7 @@ app.post('/login', async (req, res) => {
 
     if (user) {
       const { _id, premium, university } = user
+      console.log("premium:",premium)
       res.json({
         message: 'L\'utente esiste nel database.',
         user: email,
@@ -152,12 +98,22 @@ app.post('/login', async (req, res) => {
 app.post('/upload', upload.single('pdf'), async (req, res) => {
   try {
     const content = req.file.buffer; // Ottiene il contenuto del file PDF caricato
+    let { name, university, year, course, language, creator } = req.body;
 
     // conta le pagine del pdf
     const pdfDoc = await PDFLib.PDFDocument.load(content);
     const numPages = pdfDoc.getPageCount();
 
-    const { name, university, year, course, language, creator } = req.body;
+    const languages = await Language.find({}, 'name')
+    const langNames = languages.map(lan => lan.name.toLowerCase())
+    language = language.toLowerCase()
+    if (!langNames.includes(language)) await Language.create({name: language})
+
+    const unis = await Uni.find({}, 'name')
+    const unisNames = unis.map(uni => uni.name.toLowerCase())
+    university = university.toLowerCase()
+    if (!unisNames.includes(university)) await Uni.create({name: university})
+
     const pdf = await Pdf.create({ name, numPages, university, year, content, course, language, creator })
 
     await User.updateOne(
@@ -252,6 +208,17 @@ app.post('/userSavedPdfs', retrieveSavedPDFsMiddleware, (req, res) => {
   res.json(req.pdfs); // Invia gli oggetti PDF come risposta
 });
 
+// return saved pdfs ids by a specific user
+app.post('/savedPdfsIds', async (req, res) => {
+  try {
+    const { _id } = req.body
+    const user = await User.findById(_id);
+    res.status(200).send(user.savedPdfs)
+  } catch (error) {
+    res.status(500).send("Errore durante il recupero degli Id")
+  }
+})
+
 // return created pdfs by a specific user
 async function retrieveCreatedPDFsMiddleware(req, res, next) {
   const { _id } = req.body
@@ -266,7 +233,7 @@ async function retrieveCreatedPDFsMiddleware(req, res, next) {
         // console.log(pdfId)
         pdfs.push(pdf);
       })
-      );
+    );
     req.pdfs = pdfs; // Memorizza gli oggetti PDF nell'oggetto di richiesta
     next();
   } catch (error) {
@@ -298,9 +265,9 @@ app.post('/removeCreatedPdf', async (req, res) => {
   const { userId, pdfId } = req.body
 
   try {
-    
-    await Pdf.findByIdAndRemove(pdfId )
-    console.log("ok")
+
+    await Pdf.findByIdAndRemove(pdfId)
+    console.log("removed")
 
     await User.updateOne(
       { _id: userId },
@@ -341,6 +308,84 @@ app.post("/create-subscription", async (req, res) => {
     res.status(200).send("Acquisto effettuato con successo")
   } catch (error) {
     res.status(500).send("Acquisto non effettuato correttamente")
+  }
+})
+
+// check subscription validity
+app.post('/checkSubscription', async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    // Cerca l'utente nel database
+    const user = await User.findById(userId);
+
+    let { subscriptionDate, subscriptionType, premium, email, _id, university } = user
+    const currentDate = new Date()
+
+    let message
+    let maxMonth
+    if (premium && subscriptionType != "root") {
+      // Calcolo della differenza in millisecondi tra le due date
+      const timeDifference = currentDate.getTime() - subscriptionDate.getTime();
+      // Conversione della differenza in millisecondi in mesi
+      const millisecondsInMonth = 1000 * 60 * 60 * 24 * 30; // approssimazione: 30 giorni al mese
+      const monthsDifference = timeDifference / millisecondsInMonth;
+
+      switch (subscriptionType) {
+        case "Anunale":
+          maxMonth = 12
+          break
+        case "Trimestrale":
+          maxMonth = 3
+          break
+        case "Mensile":
+          maxMonth = 1
+          break
+      }
+
+      if (monthsDifference >= maxMonth) {
+        message = 'Sono passati' + maxMonth + 'mesi. Il tuo abbonamento è scaduto!!!'
+        await User.updateOne(
+          { _id: _id },
+          { $set: { premium: false, subscriptionType: "", subscriptionDate: null } }
+        )
+        premium = false
+      }
+      else {
+        message = 'Il tuo abbonamento è ancora valido.'
+      }
+    }
+    else {
+      message = "abbonamento valido"
+    }
+    res.json({
+      message: message,
+      user: email,
+      userId: _id,
+      premium: premium,
+      university: university
+    });
+  } catch (err) {
+    console.error('Errore nella verifica dell\'abbonamento:', err);
+    res.status(500).send('Si è verificato un errore nella verifica dell\'abbonamento.');
+  }
+})
+
+app.get("/universities", async (req, res) =>{
+  try{
+    const unis=Uni.find({}, 'name')
+    res.status(200).send((await unis).map(uni => uni.name))
+  }catch(error) {
+    res.status(500).send('Errore nel recupero delle università')
+  }
+})
+
+app.get("/languages", async (req, res) =>{
+  try{
+    const languages=Language.find({}, 'name')
+    res.status(200).send((await languages).map(lan => lan.name))
+  }catch(error) {
+    res.status(500).send('Errore nel recupero delle lingue')
   }
 })
 

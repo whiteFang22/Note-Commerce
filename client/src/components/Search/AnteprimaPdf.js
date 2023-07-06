@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import PreviewPdfReader from './PreviewPdfReader';
 import { pdfjs } from 'react-pdf'
@@ -9,7 +9,8 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 function AnteprimaPdf(props) {
-   const { _id, name, course, university, numPages, year, creator } = props.pdf
+   const { _id, name, course, numPages, year, creator, university } = props.pdf
+
    return (
       <div className="border-y hover:bg-sky-50">
          <ul className='mx-10'>

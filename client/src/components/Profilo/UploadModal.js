@@ -13,7 +13,11 @@ function UploadModal(props) {
    const [university, setUniversity] = useState(undefined)
    const [course, setCourse] = useState(undefined)
 
-   const handleUpload = () => {
+   const date = new Date()
+
+   const handleUpload = (e) => {
+      e.preventDefault()
+      toggleModal()
       if (selectedFile) {
          const formData = new FormData();
          formData.append('pdf', selectedFile);
@@ -28,18 +32,23 @@ function UploadModal(props) {
             .then((response) => {
                // Gestisci la risposta dal backend
                console.log('Risposta dal backend:', response.data);
-               axios.post('http://localhost:3500/create-subscription',{
-                  userId: state.userId
-               })
-               .then (response => {
-                  setState({
-                     user: state.user,
+               if (state.premium===false){
+                  console.log("premium:", state.premium)
+                  axios.post('http://localhost:3500/create-subscription',{
                      userId: state.userId,
-                     university: state.university,
-                     logged: true,
-                     premium: true
-                   })
-               })
+                     subscriptionType: "Mensile",
+                     subscriptionDate: date
+                  })
+                  .then (response => {
+                     setState({
+                        user: state.user,
+                        userId: state.userId,
+                        university: state.university,
+                        logged: true,
+                        premium: true
+                      })
+                  })
+               }
                props.setResponseText('caricamento andato a buon fine')
                props.setResponseColor('text-green-500')
                props.setReloading(true)
@@ -54,17 +63,12 @@ function UploadModal(props) {
       }
    };
 
-   const changeDefault = (e) => {
-      e.preventDefault()
-      toggleModal()
-   }
-
    return (
       <div className="modal w-screen h-screen fixed bottom-0 left-0 right-0 top-0">
          <div onClick={props.toggleModal} className='overlay w-screen h-screen fixed bottom-0 left-0 right-0 top-0 bg-transparent/30'></div>
          <div className="modal-content grid gap-y-3 relative bg-white text-black mx-auto mt-[10vh] py-4 px-7 w-[400px] border-2 rounded-3xl">
             <span className="font-bold text-lg mb-5">Compila i seguenti campi</span>
-            <form onSubmit={changeDefault} className="contents form">
+            <form onSubmit={handleUpload} className="contents form">
                <label className=''>Nome file</label>
                <input type="text" required className='border rounded-lg px-2 py-1 ' placeholder='Nome'
                   onChange={(e) => {
@@ -91,7 +95,7 @@ function UploadModal(props) {
                      setLanguage(e.target.value);
                   }} />
 
-               <button type="submit" onClick={handleUpload} className='broder rounded-full p-2 text-white bg-[#3092fa] hover:bg-[#2c86e7]'>Carica</button>
+               <button type="submit" className='broder rounded-full p-2 text-white bg-[#3092fa] hover:bg-[#2c86e7]'>Carica</button>
             </form>
 
             <button className="close-modal absolute top-5 right-5" onClick={props.toggleModal}>

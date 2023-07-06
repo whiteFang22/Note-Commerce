@@ -20,7 +20,6 @@ function PreviewPdfReader(props) {
       fetch(`http://localhost:3500/downloadOne?_id=${id}`) // Aggiungi l'URL corretto del tuo endpoint per ottenere il file PDF
          .then(response => response.blob())
          .then(data => {
-            console.log(data.content)
             const fileReader = new FileReader();
             fileReader.onloadend = () => {
                setPdfData(fileReader.result);
