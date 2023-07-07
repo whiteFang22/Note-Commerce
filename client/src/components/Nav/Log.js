@@ -155,8 +155,11 @@ function Log(props) {
           <button type="submit" className='broder rounded-full p-2 text-white bg-[#3092fa] hover:bg-[#2c86e7]'>Accedi</button>
         </form>
 
-        {authenticationError &&
-          <span className='text-red-600'>errore nella registrazione</span>
+        {(authenticationError && props.registration) &&
+          <span className='text-red-600'>Errore: prova con un altra email</span>
+        }
+        {(authenticationError && !props.registration) &&
+          <span className='text-red-600'>Errore: credenziali errate</span>
         }
 
         {props.registration ?

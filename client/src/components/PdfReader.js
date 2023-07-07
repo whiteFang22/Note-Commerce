@@ -56,8 +56,6 @@ function PdfReader(props) {
          <div className="flex flex-col justify-center items-center">
             <ControlPanel pageNumber={pageNumber} numPages={numPages} scale={scale} setScale={setScale} setPageNumber={setPageNumber} />
          </div>
-
-
       </>
    );
 }
