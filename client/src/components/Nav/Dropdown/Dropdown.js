@@ -6,8 +6,15 @@ import { DropdownData } from './ElementData';
 
 function Dropdown(props) {
    const [visible, setVisible] = useState(false);
-   const [setState] = useContext(StateContext);
+   const [state, setState] = useContext(StateContext);
 
+   const resetState = {
+      user: "",
+      userId: "",
+      logged: false,
+      university: "",
+      premium: false
+   };
 
    const changeVisibility = () => {
       setVisible(!visible)
@@ -26,8 +33,8 @@ function Dropdown(props) {
                         return (
                            <>
                               {
-                                 (index === 4) ?
-                                    <Element key={index} onClick={() => setState({user:"", logged:false })} name={item.name} to={item.path} Style={item.Style} viewBox={item.viewBox} d={item.d} />
+                                 (index === 4) ? // Bottone per il logout
+                                    <Element key={index} onClick={() => {setState(resetState)}} name={item.name} to={item.path} Style={item.Style} viewBox={item.viewBox} d={item.d} />
                                     :
                                     <Element key={index} name={item.name} to={item.path} Style={item.Style} viewBox={item.viewBox} d={item.d} />
                               }

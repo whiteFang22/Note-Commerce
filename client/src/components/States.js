@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 
-// const initialState = {
-//    logged: true,
-// }
 const initialState = {
    user: "",
    userId: "",

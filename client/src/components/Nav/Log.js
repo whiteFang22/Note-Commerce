@@ -62,7 +62,7 @@ function Log(props) {
       password: password
     })
       .then(response => {
-        // Gestisci la risposta di successo
+        // Controllo che l'abbonamento sia ancora valido
         const { userId, premium } = response.data
         if (premium) {
           axios.post('http://localhost:3500/checkSubscription', {
@@ -95,17 +95,7 @@ function Log(props) {
       .catch(error => {
         setAuthenticationError(true)
         // Gestisci l'errore
-        if (error.response) {
-          // La richiesta è stata effettuata e il server ha risposto con uno stato di errore
-          console.error('Errore di risposta del server:', error.response.status);
-          console.log('Messaggio di errore del server:', error.response.data);
-        } else if (error.request) {
-          // La richiesta è stata effettuata ma non è stata ricevuta alcuna risposta
-          console.error('Nessuna risposta ricevuta dal server:', error.request);
-        } else {
-          // Si è verificato un errore durante la configurazione della richiesta
-          console.error('Errore durante la configurazione della richiesta:', error.message);
-        }
+        console.log('Messaggio di errore del server:', error)
       });
   }
 

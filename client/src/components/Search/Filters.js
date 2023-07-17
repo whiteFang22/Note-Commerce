@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 
 function Filters(props) {
    const { setUpdate, setUniversity, setCourse, setLanguage } = props
-   const [loading, setLoading] = useState(false)
-   const [selectedOption, setSelectedOption] = useState('');
+   // const [loading, setLoading] = useState(false)
+   // const [selectedOption, setSelectedOption] = useState('')
    const { university, language, course, update, universities, languages } = props.filterProps
 
    const handleOptionChange = (event) => {
@@ -44,18 +43,6 @@ function Filters(props) {
                </select>
             </div>
          </div>
-
-         {/* <div className="basis-1/4 px-3">
-            <label htmlFor="course" className="text-sm font-thinh">Filtro per corso</label>
-            <div>
-               <select value={course} name="course" id="course" className="border rounded-lg w-full p-2" onChange={handleOptionChange}>
-                  <option value={undefined}></option>
-                  <option value="Basi di dati e Web">Basi di dati e Web</option>
-                  <option value="Modelli e algoritmi per il supporto alle decisioni">Modelli e algoritmi per il supporto alle decisioni</option>
-                  <option value="Architettura dei calcolatori elettronici">Architettura dei calcolatori elettronici</option>
-               </select>
-            </div>
-         </div> */}
 
          <div className="basis-1/4 px-3">
             <label htmlFor="language" className="text-sm font-thinh">Filtra per lingua</label>

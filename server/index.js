@@ -22,7 +22,8 @@ const app = express()
 const upload = multer(); // Middleware per la gestione del caricamento dei file
 
 app.use(cors()) //enables cross origin comunication
-app.use(express.json())
+app.use(express.json()) //parses the body of incoming requests and, if the request's 
+                        // content type is JSON, automatically converts it into a usable JavaScript object.
 
 // check if the user.mail already exists into the db
 const checkDuplicateUser = async (req, res, next) => {
@@ -104,6 +105,8 @@ app.post('/upload', upload.single('pdf'), async (req, res) => {
     const pdfDoc = await PDFLib.PDFDocument.load(content);
     const numPages = pdfDoc.getPageCount();
 
+    // per ogni file ricevuto salva la relativa lingua e università di
+    // provenienza nel db se queste non sono già presenti
     const languages = await Language.find({}, 'name')
     const langNames = languages.map(lan => lan.name.toLowerCase())
     language = language.toLowerCase()
@@ -114,8 +117,10 @@ app.post('/upload', upload.single('pdf'), async (req, res) => {
     university = university.toLowerCase()
     if (!unisNames.includes(university)) await Uni.create({name: university})
 
+    // inserisce il pdf ricevuto nel db
     const pdf = await Pdf.create({ name, numPages, university, year, content, course, language, creator })
 
+    // inserisce l'id del pdf nell'array createdPdfs del rispettivo creatore
     await User.updateOne(
       { _id: creator },
       { $push: { createdPdfs: pdf._id } }
@@ -273,9 +278,14 @@ app.post('/removeCreatedPdf', async (req, res) => {
       { _id: userId },
       { $pull: { createdPdfs: pdfId } }
     )
+    
+    // se il pdf è stato salvato da un utente, lo elimino da savedPdfs
+    await User.updateMany(
+      {  },
+      { $pull: { savedPdfs: pdfId } }
+      )
+  
     res.status(200).send("pdf rimosso correttamente")
-
-
 
   } catch (error) {
     res.status(500).json({ error: 'Errore durante la rimozione del PDF creato' });
@@ -297,6 +307,7 @@ app.post('/savePdf', async (req, res) => {
   }
 })
 
+// creates a specific subscription to a user
 app.post("/create-subscription", async (req, res) => {
   const { userId, subscriptionType, subscriptionDate } = req.body
 

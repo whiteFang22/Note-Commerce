@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import ControlPanel from './ControlPanel';
-import { StateContext } from './States';
+import { StateContext } from '../States';
 
 
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';

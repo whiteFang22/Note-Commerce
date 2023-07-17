@@ -19,6 +19,8 @@ function UploadModal(props) {
       e.preventDefault()
       toggleModal()
       if (selectedFile) {
+         // FormData is a JavaScript object that allows you to easily create formatted data 
+         // for sending HTTP requests, especially for file uploads
          const formData = new FormData();
          formData.append('pdf', selectedFile);
          formData.append('name', name);
@@ -30,8 +32,7 @@ function UploadModal(props) {
 
          axios.post('http://localhost:3500/upload', formData)
             .then((response) => {
-               // Gestisci la risposta dal backend
-               console.log('Risposta dal backend:', response.data);
+               // abbono l'utente per un mese se non è abbonato
                if (state.premium===false){
                   console.log("premium:", state.premium)
                   axios.post('http://localhost:3500/create-subscription',{

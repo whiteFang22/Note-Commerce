@@ -27,12 +27,12 @@ function Nav(props) {
 
    // gets the global state
    const [state] = useContext(StateContext);
-   const [sidebar, setSidebar] = useState(false);
+   // const [sidebar, setSidebar] = useState(false);
 
-   const toggleSidebar = () => {
-      setSidebar(!sidebar);
-      console.log(sidebar);
-   }
+   // const toggleSidebar = () => {
+   //    setSidebar(!sidebar);
+   //    console.log(sidebar);
+   // }
 
    return (
       // <div className="nav flex justify-between items-baseline">
@@ -49,9 +49,9 @@ function Nav(props) {
 
          </div>
 
-         {sidebar && (
+         {/* {sidebar && (
             <Sidebar onClick={toggleSidebar}/>
-         )}
+         )} */}
 
          <div className={rigth_nav}>
             {!(state.logged) ?

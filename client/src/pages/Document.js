@@ -1,6 +1,6 @@
 import React from 'react'
 import Nav from '../components/Nav/Nav'
-import PdfReader from '../components/PdfReader';
+import PdfReader from '../components/Document/PdfReader';
 import { useLocation } from 'react-router-dom'
 
 function Document() {
